@@ -4,7 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class SqliteDatabaseAdapter {
@@ -28,7 +32,7 @@ public class SqliteDatabaseAdapter {
         this.sqLiteDatabase.close();
     }
 
-    public void insertLocation(Location location){
+    public void insertLocation(LocationObject location){
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(SqliteHelper.Title_COLUMN , location.getTitle());
@@ -44,7 +48,7 @@ public class SqliteDatabaseAdapter {
 
     }
 
-    public void  updateLocation(int id , Location location){
+    public void  updateLocation(int id , LocationObject location){
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(SqliteHelper.Title_COLUMN , location.getTitle());
@@ -56,9 +60,9 @@ public class SqliteDatabaseAdapter {
 
     }
 
-    public List <Location> getAllLocations(){
+    public List <LocationObject> getAllLocations(){
 
-        List <Location> locations = new ArrayList<>();
+        List <LocationObject> locations = new ArrayList<>();
 
         Cursor cursor = this.sqLiteDatabase.query(SqliteHelper.LOCATIONS_TABLE , this.tableColumns ,null , null , null ,null ,null );
         cursor.moveToFirst();
@@ -69,9 +73,14 @@ public class SqliteDatabaseAdapter {
             String  locationDescription = cursor.getString(2);
             double  locationLatitude = cursor.getDouble(3);
             double  locationLongitude = cursor.getDouble(4);
-            String visitDate = cursor.getString(5);
+            Timestamp visitDateTimeStamp =  Timestamp.valueOf(cursor.getString(5));
 
-            Location location = new Location(locationLatitude , locationLongitude , locationTitle , locationDescription ,  visitDate);
+            Date date = new Date();
+            date.setTime(visitDateTimeStamp.getTime());
+            String formattedDate = new SimpleDateFormat("yyyyMMddHH:mm:ss").format(date);
+
+            LocationObject location = new LocationObject(locationLatitude , locationLongitude , locationTitle , locationDescription );
+            location.setVisitingDate(formattedDate);
             locations.add(location);
             cursor.moveToNext();
         }

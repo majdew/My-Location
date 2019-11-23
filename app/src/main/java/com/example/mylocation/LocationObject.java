@@ -2,19 +2,18 @@ package com.example.mylocation;
 
 import java.util.Date;
 
-public class Location {
+public class LocationObject {
     private  double latitude;
     private  double longitude;
     private String title;
     private String locationDescription;
     private String visitingDate;
 
-    public Location(double latitude, double longitude, String title, String locationDescription, String visitingDate) {
+    public LocationObject(double latitude, double longitude, String title, String locationDescription) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.title = title;
         this.locationDescription = locationDescription;
-        this.visitingDate = visitingDate;
     }
 
     public double getLatitude() {
