@@ -8,12 +8,17 @@ public class LocationObject {
     private String title;
     private String locationDescription;
     private String visitingDate;
+    private int id;
 
     public LocationObject(double latitude, double longitude, String title, String locationDescription) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.title = title;
         this.locationDescription = locationDescription;
+        id++;
+    }
+
+    public LocationObject() {
     }
 
     public double getLatitude() {
@@ -54,5 +59,9 @@ public class LocationObject {
 
     public void setVisitingDate(String visitingDate) {
         this.visitingDate = visitingDate;
+    }
+
+    public int getId() {
+        return id;
     }
 }

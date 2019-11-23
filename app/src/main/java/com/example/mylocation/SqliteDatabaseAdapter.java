@@ -77,7 +77,7 @@ public class SqliteDatabaseAdapter {
 
             Date date = new Date();
             date.setTime(visitDateTimeStamp.getTime());
-            String formattedDate = new SimpleDateFormat("yyyyMMddHH:mm:ss").format(date);
+            String formattedDate = new SimpleDateFormat("yyyy/MM/dd  HH:mm:ss").format(date);
 
             LocationObject location = new LocationObject(locationLatitude , locationLongitude , locationTitle , locationDescription );
             location.setVisitingDate(formattedDate);
