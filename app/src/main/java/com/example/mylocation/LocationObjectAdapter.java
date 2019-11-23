@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,18 +33,18 @@ public class LocationObjectAdapter extends ArrayAdapter <LocationObject> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.location_view_layout , parent , false);
         }
 
-        EditText titleEditText = (EditText)convertView. findViewById(R.id.title_edit_text);
-        EditText descriptionEditText = (EditText)convertView. findViewById(R.id.description_edit_text);
-        EditText dateEditText = (EditText)convertView. findViewById(R.id.date_edit_text);
-        EditText latitudeEditText = (EditText)convertView. findViewById(R.id.latitude_edit_text);
-        EditText longitudeEditText = (EditText)convertView. findViewById(R.id.longitude_edit_text);
+        TextView titleTextView= (TextView) convertView. findViewById(R.id.title_text_view);
+        TextView descriptionTextView = (TextView) convertView. findViewById(R.id.description_text_view);
+        TextView dateTextView = (TextView) convertView. findViewById(R.id.date_text_view);
+        TextView latitudeTextView = (TextView) convertView. findViewById(R.id.latitude_text_view);
+        TextView longitudeTextView = (TextView) convertView. findViewById(R.id.longitude_text_view);
 
-        titleEditText.setText(location.getTitle());
-        descriptionEditText.setText(location.getLocationDescription());
-        dateEditText.setText(location.getVisitingDate());
-        latitudeEditText.setText(location.getLatitude()+"");
-        longitudeEditText.setText(location.getLongitude()+"");
+        titleTextView.setText(location.getTitle());
+        descriptionTextView.setText(location.getLocationDescription());
+        dateTextView.setText(location.getVisitingDate());
+        latitudeTextView.setText(location.getLatitude()+"");
+        longitudeTextView.setText(location.getLongitude()+"");
 
-        return super.getView(position, convertView, parent);
+        return convertView;
     }
 }

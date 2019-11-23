@@ -60,9 +60,9 @@ public class SqliteDatabaseAdapter {
 
     }
 
-    public List <LocationObject> getAllLocations(){
+    public List<LocationObject> getAllLocations(){
 
-        List <LocationObject> locations = new ArrayList<>();
+        List<LocationObject> locations = new ArrayList<>();
 
         Cursor cursor = this.sqLiteDatabase.query(SqliteHelper.LOCATIONS_TABLE , this.tableColumns ,null , null , null ,null ,null );
         cursor.moveToFirst();

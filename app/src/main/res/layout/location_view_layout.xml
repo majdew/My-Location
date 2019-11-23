@@ -8,15 +8,15 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/title_edit_text"
+        <TextView
+            android:id="@+id/title_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:hint="this is the title edit text"/>
 
-        <EditText
-            android:id="@+id/date_edit_text"
+        <TextView
+            android:id="@+id/date_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -31,8 +31,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp">
 
-        <EditText
-            android:id="@+id/description_edit_text"
+        <TextView
+            android:id="@+id/description_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="this the location description"/>
@@ -42,19 +42,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/latitude_edit_text"
+        <TextView
+            android:id="@+id/latitude_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="30dp"
             android:hint="Latitude" />
 
-        <EditText
-            android:id="@+id/longitude_edit_text"
+        <TextView
+            android:id="@+id/longitude_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"

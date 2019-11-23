@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -17,7 +18,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     EditText titleEditText , locationDescriptionEditText;
-    Button addLocationButton;
+    Button addLocationButton , viewLocationsButton;
     LocationManager locationManager;
     double latitude;
     double longitude;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         titleEditText = findViewById(R.id.location_title_edit_text);
         locationDescriptionEditText = findViewById(R.id.location_description_edit_text);
         addLocationButton = findViewById(R.id.add_location_button);
+        viewLocationsButton = findViewById(R.id.view_locations_button);
 
         sqliteDatabaseAdapter = new SqliteDatabaseAdapter(this);
         sqliteDatabaseAdapter.open();
@@ -80,6 +82,16 @@ public class MainActivity extends AppCompatActivity {
                 sqliteDatabaseAdapter.insertLocation(location);
             }
         });
+
+        viewLocationsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this , ViewLocationsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
 
 
     }
