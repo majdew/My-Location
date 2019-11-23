@@ -1,4 +1,4 @@
-package com.example.mylocation.mainclass;
+package com.example.mylocation;
 
 import java.util.Date;
 
