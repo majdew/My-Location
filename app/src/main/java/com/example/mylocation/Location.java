@@ -7,9 +7,9 @@ public class Location {
     private  double longitude;
     private String title;
     private String locationDescription;
-    private Date visitingDate;
+    private String visitingDate;
 
-    public Location(double latitude, double longitude, String title, String locationDescription, Date visitingDate) {
+    public Location(double latitude, double longitude, String title, String locationDescription, String visitingDate) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.title = title;
@@ -49,11 +49,11 @@ public class Location {
         this.locationDescription = locationDescription;
     }
 
-    public Date getVisitingDate() {
+    public String getVisitingDate() {
         return visitingDate;
     }
 
-    public void setVisitingDate(Date visitingDate) {
+    public void setVisitingDate(String visitingDate) {
         this.visitingDate = visitingDate;
     }
 }

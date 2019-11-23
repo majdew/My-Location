@@ -23,7 +23,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
             + DESCRIPTION_COLUMN + " VARCHAR (250) NOT NULL,  "
             + LATITUDE_COLUMN + " DECIMAL (10,5) NOT NULL , "
             + LONGITUDE_COLUMN + " DECIMAL (10,5) NOT NULL , "
-            + DATE_COLUMN + " DATE NOT NULL ) ;";
+            + DATE_COLUMN + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP ) ;";
 
 
     public SqliteHelper (Context context) {
