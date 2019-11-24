@@ -73,9 +73,6 @@ public class ViewLocationsActivity extends AppCompatActivity {
 
     public void
     updateLocationAlertDialog(){
-        TextView idTextView = (TextView) locationListItem.findViewById(R.id.visting_id_text_view);
-        final int locationItemId = Integer.parseInt(idTextView.getText().toString());
-
         final AlertDialog.Builder alert = new AlertDialog.Builder(ViewLocationsActivity.this);
         alert.setIcon(R.mipmap.ic_launcher);
         final View view = getLayoutInflater().inflate(R.layout.update_location_layout,null);
