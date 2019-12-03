@@ -8,17 +8,20 @@ public class LocationObject {
     private String title;
     private String locationDescription;
     private String visitingDate;
-    private int id;
+    private int id ;
 
-    public LocationObject(double latitude, double longitude, String title, String locationDescription) {
+    public LocationObject(int id , double latitude, double longitude, String title, String locationDescription) {
+        this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
         this.title = title;
         this.locationDescription = locationDescription;
-        id++;
     }
-
-    public LocationObject() {
+    public LocationObject( double latitude, double longitude, String title, String locationDescription){
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.title = title;
+        this.locationDescription = locationDescription;
     }
 
     public double getLatitude() {

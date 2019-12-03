@@ -33,6 +33,7 @@ public class SqliteDatabaseAdapter {
     }
 
     public void insertLocation(LocationObject location){
+        this.open();
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(SqliteHelper.Title_COLUMN , location.getTitle());
@@ -41,26 +42,29 @@ public class SqliteDatabaseAdapter {
         contentValues.put(SqliteHelper.LONGITUDE_COLUMN, location.getLongitude());
 
         this.sqLiteDatabase.insert(SqliteHelper.LOCATIONS_TABLE , null , contentValues);
+        this.close();
     }
 
     public void deleteLocation(int id){
+        this.open();
         this.sqLiteDatabase.delete(SqliteHelper.LOCATIONS_TABLE , SqliteHelper.ID_COLUMN + " = " + id , null);
+        this.close();
 
     }
 
-    public void  updateLocation(int id , LocationObject location){
-        ContentValues contentValues = new ContentValues();
-
-        contentValues.put(SqliteHelper.Title_COLUMN , location.getTitle());
-        contentValues.put(SqliteHelper.DESCRIPTION_COLUMN , location.getLocationDescription());
-        contentValues.put(SqliteHelper.LATITUDE_COLUMN , location.getLatitude());
-        contentValues.put(SqliteHelper.LONGITUDE_COLUMN, location.getLongitude());
-
-        this.sqLiteDatabase.update(SqliteHelper.LOCATIONS_TABLE , contentValues , SqliteHelper.ID_COLUMN + " = " + id , null);
-
+    public void  updateLocation(int id , String locationTitle , String locationDescription){
+        this.open();
+        String SQLStatement = "UPDATE " + SqliteHelper.LOCATIONS_TABLE +
+                              " SET " + SqliteHelper.Title_COLUMN + " = \' "
+                              + locationTitle + "\' , " + SqliteHelper.DESCRIPTION_COLUMN + " = \' "
+                              + locationDescription + "\' " + " WHERE " + SqliteHelper.ID_COLUMN + " = "
+                              + id +" ; ";
+        sqLiteDatabase.execSQL(SQLStatement);
+        this.close();
     }
 
     public List<LocationObject> getAllLocations(){
+        this.open();
 
         List<LocationObject> locations = new ArrayList<>();
 
@@ -68,7 +72,7 @@ public class SqliteDatabaseAdapter {
         cursor.moveToFirst();
 
         while(!cursor.isAfterLast()){
-
+            int  locationId = cursor.getInt(0);
             String  locationTitle = cursor.getString(1);
             String  locationDescription = cursor.getString(2);
             double  locationLatitude = cursor.getDouble(3);
@@ -79,14 +83,16 @@ public class SqliteDatabaseAdapter {
             date.setTime(visitDateTimeStamp.getTime());
             String formattedDate = new SimpleDateFormat("yyyy/MM/dd  HH:mm:ss").format(date);
 
-            LocationObject location = new LocationObject(locationLatitude , locationLongitude , locationTitle , locationDescription );
+            LocationObject location = new LocationObject(locationId , locationLatitude , locationLongitude , locationTitle , locationDescription );
             location.setVisitingDate(formattedDate);
             locations.add(location);
             cursor.moveToNext();
         }
 
         cursor.close();
+        this.close();
         return  locations;
+
 
     }
 }

@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -36,43 +35,27 @@ public class MainActivity extends AppCompatActivity {
         viewLocationsButton = findViewById(R.id.view_locations_button);
 
         sqliteDatabaseAdapter = new SqliteDatabaseAdapter(this);
-        sqliteDatabaseAdapter.open();
 
-        locationManager = (LocationManager)this.getSystemService(LOCATION_SERVICE);
-        LocationListener locationListener = new LocationListener(){
 
-            @Override
-            public void onLocationChanged(android.location.Location location) {
-                if (ContextCompat.checkSelfPermission(MainActivity.this , android.Manifest.permission.ACCESS_FINE_LOCATION) ==
-                        PackageManager.PERMISSION_GRANTED &&
-                        ContextCompat.checkSelfPermission(MainActivity.this ,
-                                android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (checkLocationPermission()) {
+            locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+            LocationListener locationListener = new LocationListener() {
+                @Override
+                public void onLocationChanged(android.location.Location location) {
                     // Permission already Granted
                     latitude = location.getLatitude();
                     longitude = location.getLongitude();
                 }
-                else {
-                    ActivityCompat.requestPermissions(MainActivity.this,
-                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-                            1);
-                }
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) { }
+                @Override
+                public void onProviderEnabled(String provider) { }
+                @Override
+                public void onProviderDisabled(String provider) { }
+            };
 
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-            }
-        };
-
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        }
 
         // Add location button listener
         addLocationButton.setOnClickListener(new View.OnClickListener() {
@@ -92,10 +75,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-
-
     }
 
     @Override
@@ -103,15 +82,23 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //Permission Grantnted
-                Toast.makeText(this, "Permession Granted You Can Call", Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(this, "Permession Granted You Can add location", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        sqliteDatabaseAdapter.close();
+    public boolean checkLocationPermission(){
+        if (ContextCompat.checkSelfPermission(MainActivity.this , android.Manifest.permission.ACCESS_FINE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(MainActivity.this ,
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        else {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+            return  false;
+        }
+
     }
 }

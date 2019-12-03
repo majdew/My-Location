@@ -1,13 +1,10 @@
 package com.example.mylocation;
 
 import android.content.Context;
-import android.location.Location;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,11 +14,9 @@ import java.util.ArrayList;
 
 public class LocationObjectAdapter extends ArrayAdapter <LocationObject> {
 
-    ArrayList <LocationObject> locations ;
 
     public LocationObjectAdapter(@NonNull Context context,  ArrayList<LocationObject> locations) {
         super(context, 0 , locations);
-        this.locations = locations;
     }
 
     @NonNull
@@ -30,15 +25,17 @@ public class LocationObjectAdapter extends ArrayAdapter <LocationObject> {
         LocationObject location = getItem(position);
 
         if(convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.location_view_layout , parent , false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.location_view_layout , null);
         }
 
-        TextView titleTextView= (TextView) convertView. findViewById(R.id.title_text_view);
-        TextView descriptionTextView = (TextView) convertView. findViewById(R.id.description_text_view);
-        TextView dateTextView = (TextView) convertView. findViewById(R.id.date_text_view);
-        TextView latitudeTextView = (TextView) convertView. findViewById(R.id.latitude_text_view);
-        TextView longitudeTextView = (TextView) convertView. findViewById(R.id.longitude_text_view);
-
+        TextView idTextView=  convertView. findViewById(R.id.id_text_view);
+        TextView titleTextView=  convertView. findViewById(R.id.title_text_view);
+        TextView descriptionTextView =  convertView. findViewById(R.id.description_text_view);
+        TextView dateTextView =  convertView. findViewById(R.id.date_text_view);
+        TextView latitudeTextView =  convertView. findViewById(R.id.latitude_text_view);
+        TextView longitudeTextView =  convertView. findViewById(R.id.longitude_text_view);
+        convertView.setLongClickable(true);
+        idTextView.setText(location.getId()+"");
         titleTextView.setText(location.getTitle());
         descriptionTextView.setText(location.getLocationDescription());
         dateTextView.setText(location.getVisitingDate());
