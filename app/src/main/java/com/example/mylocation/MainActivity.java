@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     LocationManager locationManager;
     double latitude;
     double longitude;
+    static  int locationId = 1;
     SqliteDatabaseAdapter sqliteDatabaseAdapter;
 
     @Override
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 String locationTitle = titleEditText.getText().toString();
                 String locationDescription = locationDescriptionEditText.getText().toString();
                 LocationObject location = new LocationObject(latitude ,longitude,locationTitle, locationDescription);
-                sqliteDatabaseAdapter.insertLocation(location);
+                sqliteDatabaseAdapter.insertLocation(location , locationId ++);
             }
         });
 

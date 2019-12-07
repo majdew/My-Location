@@ -1,13 +1,14 @@
 package com.example.mylocation;
 
-import java.util.Date;
+import java.util.ArrayList;
+
 
 public class LocationObject {
     private  double latitude;
     private  double longitude;
     private String title;
     private String locationDescription;
-    private String visitingDate;
+    private ArrayList<String> visitingDate;
     private int id ;
 
     public LocationObject(int id , double latitude, double longitude, String title, String locationDescription) {
@@ -56,11 +57,11 @@ public class LocationObject {
         this.locationDescription = locationDescription;
     }
 
-    public String getVisitingDate() {
+    public ArrayList<String> getVisitingDate() {
         return visitingDate;
     }
 
-    public void setVisitingDate(String visitingDate) {
+    public void setVisitingDate(ArrayList <String> visitingDate) {
         this.visitingDate = visitingDate;
     }
 
