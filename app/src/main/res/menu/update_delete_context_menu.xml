@@ -6,4 +6,6 @@
         android:title="Update"/>
     <item android:id="@+id/marker"
         android:title="Marker in Google Maps"/>
+    <item android:id="@+id/date"
+        android:title="Visiting dates"/>
 </menu>

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -19,7 +20,7 @@ public class SqliteDatabaseAdapter {
     SqliteHelper sqliteHelper ;
     String [] tableColumns = {SqliteHelper.ID_COLUMN , SqliteHelper.Title_COLUMN ,
             SqliteHelper.DESCRIPTION_COLUMN , SqliteHelper.LATITUDE_COLUMN ,
-            SqliteHelper.LONGITUDE_COLUMN  , SqliteHelper.IMAGE_COLUMN};
+            SqliteHelper.LONGITUDE_COLUMN  ,SqliteHelper.DATE_COLUMN , SqliteHelper.IMAGE_COLUMN};
     String [] dateTableColumns = {SqliteHelper.ID_COLUMN ,  SqliteHelper.DATE_COLUMN };
 
 
@@ -35,7 +36,7 @@ public class SqliteDatabaseAdapter {
         this.sqLiteDatabase.close();
     }
 
-    public void insertLocation(LocationObject location , int locationId){
+    public boolean insertLocation(LocationObject location){
         this.open();
         ContentValues locationContentValues = new ContentValues();
 
@@ -45,13 +46,11 @@ public class SqliteDatabaseAdapter {
         locationContentValues.put(SqliteHelper.LONGITUDE_COLUMN, location.getLongitude());
         locationContentValues.put(SqliteHelper.IMAGE_COLUMN , location.getLocationImageBytes());
 
-        ContentValues dateContentValues = new ContentValues();
+        long locationRowId = this.sqLiteDatabase.insert(SqliteHelper.LOCATIONS_TABLE , null , locationContentValues);
 
-        dateContentValues.put(SqliteHelper.ID_COLUMN , locationId);
 
-        this.sqLiteDatabase.insert(SqliteHelper.LOCATIONS_TABLE , null , locationContentValues);
-        this.sqLiteDatabase.insert(SqliteHelper.DATE_TABLE , null , dateContentValues);
         this.close();
+        return (locationRowId !=0);
     }
 
     public void deleteLocation(int id){
@@ -87,10 +86,15 @@ public class SqliteDatabaseAdapter {
             String  locationDescription = cursor.getString(2);
             double  locationLatitude = cursor.getDouble(3);
             double  locationLongitude = cursor.getDouble(4);
-            byte [] locationImageByteArray = cursor.getBlob(5);
+            Timestamp visitDateTimeStamp =  Timestamp.valueOf(cursor.getString(5));
+            byte [] locationImageByteArray = cursor.getBlob(6);
 
             LocationObject location = new LocationObject(locationId , locationLatitude , locationLongitude , locationTitle , locationDescription , locationImageByteArray);
-            ArrayList <String> listOfDates = this.getAllDates(locationId);
+            Date date = new Date();
+            date.setTime(visitDateTimeStamp.getTime());
+            String formattedDate = new SimpleDateFormat("yyyy/MM/dd  HH:mm:ss").format(date);
+            ArrayList <String> listOfDates = new ArrayList<>();
+            listOfDates.add(formattedDate);
             location.setVisitingDate(listOfDates);
             locations.add(location);
             cursor.moveToNext();
@@ -103,6 +107,7 @@ public class SqliteDatabaseAdapter {
     }
 
     public ArrayList <String> getAllDates(int locationId){
+        this.open();
         ArrayList<String> visitingDates = new ArrayList<>();
         Cursor cursor = this.sqLiteDatabase.rawQuery("SELECT * FROM "+ SqliteHelper.DATE_TABLE + " WHERE " + SqliteHelper.ID_COLUMN +" = " + locationId + ";" , null);
         cursor.moveToFirst();
@@ -113,17 +118,19 @@ public class SqliteDatabaseAdapter {
 
             Date date = new Date();
             date.setTime(visitDateTimeStamp.getTime());
-            String formattedDate = new SimpleDateFormat("yyyy/MM/dd  HH:mm:ss").format(date);
+            String formattedDate = new SimpleDateFormat("yyyy/MM/dd  HH:mm:ss ").format(date);
 
             visitingDates.add(formattedDate);
             cursor.moveToNext();
         }
 
         cursor.close();
+        this.close();
         return  visitingDates;
     }
 
     public ArrayList<LatLng> getAllLocationsLatLng (){
+
         ArrayList <LocationObject> locationObjects = getAllLocations();
         ArrayList<LatLng> latLngs = new ArrayList<>();
         for(int i=0; i<locationObjects.size() ; i++){
@@ -134,5 +141,15 @@ public class SqliteDatabaseAdapter {
             latLngs.add(latLng);
         }
         return  latLngs;
+    }
+
+    public  boolean insertDate(int locationId){
+        this.open();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(SqliteHelper.ID_COLUMN , locationId);
+        long dateRowId = this.sqLiteDatabase.insert(SqliteHelper.DATE_TABLE , null, contentValues);
+        this.close();
+        return  (dateRowId !=0);
+
     }
 }

@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -19,8 +20,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import java.io.ByteArrayOutputStream;
+import com.google.android.gms.maps.model.LatLng;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     EditText titleEditText , locationDescriptionEditText;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     double longitude;
     byte [] locationImageBytes;
     static  int locationId = 1;
+    boolean isImageTaken = false;
     SqliteDatabaseAdapter sqliteDatabaseAdapter;
 
     @Override
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
                     // Permission already Granted
                     latitude = location.getLatitude();
                     longitude = location.getLongitude();
+
                 }
                 @Override
                 public void onStatusChanged(String provider, int status, Bundle extras) { }
@@ -73,12 +76,45 @@ public class MainActivity extends AppCompatActivity {
         addLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String locationTitle = titleEditText.getText().toString();
-                String locationDescription = locationDescriptionEditText.getText().toString();
-                LocationObject location = new LocationObject(latitude ,longitude,locationTitle, locationDescription ,locationImageBytes);
-                sqliteDatabaseAdapter.insertLocation(location , locationId ++);
-            }
-        });
+                if(isImageTaken){
+                    String locationTitle = titleEditText.getText().toString();
+                    String locationDescription = locationDescriptionEditText.getText().toString();
+                    LocationObject location = new LocationObject(latitude ,longitude,locationTitle, locationDescription ,locationImageBytes);
+                    if(sqliteDatabaseAdapter.insertLocation(location)) {
+                        Toast.makeText(MainActivity.this, "Location added sucssufully", Toast.LENGTH_SHORT).show();
+                        locationId++;
+                    }
+                    isImageTaken = false;
+                    float [] results = new float[1];
+                    boolean isNearLocation = false;
+                    ArrayList <Integer> nearLocationIndicies = new ArrayList<>();
+                    if(latitude !=0 && longitude !=0) {
+                        for (int i = 0; i < sqliteDatabaseAdapter.getAllLocationsLatLng().size(); i++) {
+                            LatLng latLng = sqliteDatabaseAdapter.getAllLocationsLatLng().get(i);
+                            if(latLng != null) {
+                                Location.distanceBetween(latitude, longitude, latLng.latitude, latLng.longitude, results);
+                                if (results[0] < 20) {
+                                    isNearLocation =true;
+                                    nearLocationIndicies.add(i);
+
+                                }
+                            }
+                        }
+                        boolean isDateInserted = false;
+                        if(isNearLocation) {
+                            Toast.makeText(MainActivity.this, "You are now close to one of your locations ", Toast.LENGTH_SHORT).show();
+                            for (int i = 0; i < nearLocationIndicies.size(); i++) {
+                                isDateInserted = (sqliteDatabaseAdapter.insertDate(nearLocationIndicies.get(i)));
+                            }
+                            if (isDateInserted)
+                                Toast.makeText(MainActivity.this, "new date was added ", Toast.LENGTH_SHORT).show();
+                        }
+                }
+                }
+                else
+                    Toast.makeText(MainActivity.this, "You must take a picture" , Toast.LENGTH_SHORT).show();
+
+            }});
 
         viewLocationsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                isImageTaken = true;
                 startActivityForResult(intent , 0);
             }
         });
@@ -130,6 +167,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    
+
 
 }

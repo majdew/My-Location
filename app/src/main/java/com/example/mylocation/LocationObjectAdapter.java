@@ -1,7 +1,6 @@
 package com.example.mylocation;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,22 +36,22 @@ public class LocationObjectAdapter extends ArrayAdapter <LocationObject> {
         TextView latitudeTextView =  convertView. findViewById(R.id.latitude_text_view);
         TextView longitudeTextView =  convertView. findViewById(R.id.longitude_text_view);
         ImageView imageView = convertView.findViewById(R.id.imageview);
+
         convertView.setLongClickable(true);
+
         titleTextView.setText(location.getTitle());
         descriptionTextView.setText(location.getLocationDescription());
+
         int latestDateIndex = location.getVisitingDate().size() - 1;
         if(latestDateIndex != -1)
             dateTextView.setText(location.getVisitingDate().get(latestDateIndex));
+
         latitudeTextView.setText(location.getLatitude()+"");
         longitudeTextView.setText(location.getLongitude()+"");
+
         byte [] imageBytes = location.getLocationImageBytes();
         if(imageBytes.length!=0)
             imageView.setImageBitmap(BitmapConvertorClass.getImage(location.getLocationImageBytes()));
-        else{
-            Drawable drawable = context.getResources().getDrawable(R.drawable.imagenotfound);
-            imageView.setImageDrawable(drawable);
-        }
-
 
         return convertView;
     }

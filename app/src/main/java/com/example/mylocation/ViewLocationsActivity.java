@@ -73,6 +73,14 @@ public class ViewLocationsActivity extends AppCompatActivity {
                 startActivity(intent);
 
             }
+            break;
+            case R.id.date: {
+                Intent intent = new Intent(this , ViewDatesActivity.class);
+                intent.putExtra("id" ,locationObjectId);
+                startActivity(intent);
+
+            }
+            break;
         }
         return super.onContextItemSelected(item);
     }
