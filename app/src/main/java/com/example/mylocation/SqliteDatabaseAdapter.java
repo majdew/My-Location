@@ -85,7 +85,7 @@ public class SqliteDatabaseAdapter {
             double  locationLatitude = cursor.getDouble(3);
             double  locationLongitude = cursor.getDouble(4);
 
-            LocationObject location = new LocationObject(locationId , locationLatitude , locationLongitude , locationTitle , locationDescription );
+            LocationObject location = new LocationObject(locationId , locationLatitude , locationLongitude , locationTitle , locationDescription);
             ArrayList <String> listOfDates = this.getAllDates(locationId);
             location.setVisitingDate(listOfDates);
             locations.add(location);

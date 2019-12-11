@@ -41,6 +41,14 @@
     </ScrollView>
 
     <Button
+        android:id="@+id/take_picture_button"
+        android:text="Take a picture"
+        android:layout_gravity="right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"/>
+
+    <Button
         android:id="@+id/add_location_button"
         android:text="Add Location"
         android:layout_gravity="right"
@@ -55,12 +63,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"/>
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/list">
 
-    </ListView>
+    <ImageView
+        android:id="@+id/imageview"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_weight="9"
+        android:layout_marginTop="10dp" />
+
+
+
 
 
 </LinearLayout>

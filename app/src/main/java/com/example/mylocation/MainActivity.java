@@ -1,23 +1,31 @@
 package com.example.mylocation;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import java.io.ByteArrayOutputStream;
 
 public class MainActivity extends AppCompatActivity {
     EditText titleEditText , locationDescriptionEditText;
-    Button addLocationButton , viewLocationsButton;
+    Button addLocationButton , viewLocationsButton , takeAPictureButton;
+    ImageView locationImage;
     LocationManager locationManager;
     double latitude;
     double longitude;
@@ -34,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         locationDescriptionEditText = findViewById(R.id.location_description_edit_text);
         addLocationButton = findViewById(R.id.add_location_button);
         viewLocationsButton = findViewById(R.id.view_locations_button);
+        takeAPictureButton = findViewById(R.id.take_picture_button);
+        locationImage = findViewById(R.id.imageview);
 
         sqliteDatabaseAdapter = new SqliteDatabaseAdapter(this);
 
@@ -76,6 +86,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        takeAPictureButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent , 0);
+            }
+        });
     }
 
     @Override
@@ -102,4 +120,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+        locationImage.setImageBitmap(bitmap);
+    }
+
 }

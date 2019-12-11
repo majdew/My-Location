@@ -24,6 +24,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
             + DESCRIPTION_COLUMN + " VARCHAR (250) NOT NULL,  "
             + LATITUDE_COLUMN + " DECIMAL (10,5) NOT NULL , "
             + LONGITUDE_COLUMN + " DECIMAL (10,5) NOT NULL , "
+            + LONGITUDE_COLUMN + " DECIMAL (10,5) NOT NULL , "
             + DATE_COLUMN + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP ) ;";
 
     public static final String CREATE_TABLE_DATE = "CREATE TABLE " + DATE_TABLE

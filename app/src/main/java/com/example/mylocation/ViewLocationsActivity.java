@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -60,6 +61,18 @@ public class ViewLocationsActivity extends AppCompatActivity {
                 locationObjectAdapter.notifyDataSetChanged();
             }
             break;
+            case R.id.marker: {
+                LocationObject currentLocation = locations.get(listElementItemPosition);
+                double latitude = currentLocation.getLatitude();
+                double longitude = currentLocation.getLongitude();
+                String title = currentLocation.getTitle();
+                Intent intent = new Intent(this , MapsActivity.class);
+                intent.putExtra("title" ,title);
+                intent.putExtra("latitude" , latitude);
+                intent.putExtra("longitude" , longitude);
+                startActivity(intent);
+
+            }
         }
         return super.onContextItemSelected(item);
     }
