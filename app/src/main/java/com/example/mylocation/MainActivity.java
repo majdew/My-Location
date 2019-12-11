@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     LocationManager locationManager;
     double latitude;
     double longitude;
+    byte [] locationImageBytes;
     static  int locationId = 1;
     SqliteDatabaseAdapter sqliteDatabaseAdapter;
 
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String locationTitle = titleEditText.getText().toString();
                 String locationDescription = locationDescriptionEditText.getText().toString();
-                LocationObject location = new LocationObject(latitude ,longitude,locationTitle, locationDescription);
+                LocationObject location = new LocationObject(latitude ,longitude,locationTitle, locationDescription ,locationImageBytes);
                 sqliteDatabaseAdapter.insertLocation(location , locationId ++);
             }
         });
@@ -125,7 +126,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-        locationImage.setImageBitmap(bitmap);
+        locationImageBytes = BitmapConvertorClass.getBytes(bitmap);
+
     }
+
+    
 
 }

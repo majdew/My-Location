@@ -14,9 +14,10 @@ public class SqliteHelper extends SQLiteOpenHelper {
     public static final String DESCRIPTION_COLUMN = "locationDescription";
     public static final String LATITUDE_COLUMN = "locationLatitude";
     public static final String LONGITUDE_COLUMN = "locationLogitude";
+    public static final String IMAGE_COLUMN = "locationImageBytes";
     public static final String DATE_COLUMN = "visitDate";
 
-    public static final int VERSION = 6;
+    public static final int VERSION = 10;
 
     public static final String CREATE_TABLE_LOCATION = "CREATE TABLE " + LOCATIONS_TABLE
             + " ( " + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -24,8 +25,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
             + DESCRIPTION_COLUMN + " VARCHAR (250) NOT NULL,  "
             + LATITUDE_COLUMN + " DECIMAL (10,5) NOT NULL , "
             + LONGITUDE_COLUMN + " DECIMAL (10,5) NOT NULL , "
-            + LONGITUDE_COLUMN + " DECIMAL (10,5) NOT NULL , "
-            + DATE_COLUMN + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP ) ;";
+            + IMAGE_COLUMN + " BLOB);";
 
     public static final String CREATE_TABLE_DATE = "CREATE TABLE " + DATE_TABLE
             + " ( " + ID_COLUMN + " INTEGER ,"

@@ -32,7 +32,7 @@ public class ViewLocationsActivity extends AppCompatActivity {
         sqliteDatabaseAdapter = new SqliteDatabaseAdapter(this);
 
         locationsListView = findViewById(R.id.locations_list_view);
-        onResume();
+        refreshListView();
 
 
         registerForContextMenu(locationsListView);
@@ -110,6 +110,10 @@ public class ViewLocationsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        refreshListView();
+    }
+
+    public void refreshListView(){
         locations = (ArrayList<LocationObject>) sqliteDatabaseAdapter.getAllLocations();
         locationObjectAdapter = new LocationObjectAdapter(this , locations);
         locationsListView.setAdapter(locationObjectAdapter);
