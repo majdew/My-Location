@@ -41,10 +41,7 @@ public class LocationObjectAdapter extends ArrayAdapter <LocationObject> {
 
         titleTextView.setText(location.getTitle());
         descriptionTextView.setText(location.getLocationDescription());
-
-        int latestDateIndex = location.getVisitingDate().size() - 1;
-        if(latestDateIndex != -1)
-            dateTextView.setText(location.getVisitingDate().get(latestDateIndex));
+        dateTextView.setText(location.getVisitingDate());
 
         latitudeTextView.setText(location.getLatitude()+"");
         longitudeTextView.setText(location.getLongitude()+"");

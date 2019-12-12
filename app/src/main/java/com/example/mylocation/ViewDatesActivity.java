@@ -16,6 +16,7 @@ public class ViewDatesActivity extends AppCompatActivity {
     ListView visitingDates;
     TextView numberOfVisitsTextView;
     ArrayAdapter<String> arrayAdapter;
+    LocationObject choosenLocation;
     Intent intent;
     int locationId;
 
@@ -31,11 +32,16 @@ public class ViewDatesActivity extends AppCompatActivity {
         locationId = intent.getIntExtra("id" , 0);
         locationVisitingDates = sqliteDatabaseAdapter.getAllDates(locationId);
 
+        choosenLocation =sqliteDatabaseAdapter.getLocation(locationId);
 
-        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1 , locationVisitingDates  );
+        String firstVisitingDate = choosenLocation.getVisitingDate();
+        locationVisitingDates.add(firstVisitingDate);
+
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1 , locationVisitingDates );
         visitingDates.setAdapter(arrayAdapter);
-        int numberOfVisits = locationVisitingDates.size()+1;
-        numberOfVisitsTextView.setText("Number Of visits : " + numberOfVisits);
+        int numberOfLocationsVisits = locationVisitingDates.size() ;
+
+        numberOfVisitsTextView.setText("Number Of visits : " + numberOfLocationsVisits);
 
     }
 }

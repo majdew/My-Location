@@ -8,7 +8,7 @@ public class LocationObject {
     private  double longitude;
     private String title;
     private String locationDescription;
-    private ArrayList<String> visitingDate;
+    private String visitingDate;
     private int id ;
     private byte [] locationImageBytes;
 
@@ -60,11 +60,11 @@ public class LocationObject {
         this.locationDescription = locationDescription;
     }
 
-    public ArrayList<String> getVisitingDate() {
+    public String getVisitingDate() {
         return visitingDate;
     }
 
-    public void setVisitingDate(ArrayList <String> visitingDate) {
+    public void setVisitingDate(String visitingDate) {
         this.visitingDate = visitingDate;
     }
 

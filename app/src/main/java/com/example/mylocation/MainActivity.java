@@ -87,29 +87,33 @@ public class MainActivity extends AppCompatActivity {
                     isImageTaken = false;
                     float [] results = new float[1];
                     boolean isNearLocation = false;
-                    ArrayList <Integer> nearLocationIndicies = new ArrayList<>();
+                    boolean isDateInserted = false;
+                    ArrayList <LocationObject> locationObjects = sqliteDatabaseAdapter.getAllLocations();
+                    ArrayList <Integer> nearLocationId = new ArrayList<>();
                     if(latitude !=0 && longitude !=0) {
-                        for (int i = 0; i < sqliteDatabaseAdapter.getAllLocationsLatLng().size(); i++) {
-                            LatLng latLng = sqliteDatabaseAdapter.getAllLocationsLatLng().get(i);
-                            if(latLng != null) {
-                                Location.distanceBetween(latitude, longitude, latLng.latitude, latLng.longitude, results);
+                        for (int i = 0; i < locationObjects.size()-1; i++) {
+                            double secondLongitude = locationObjects.get(i).getLongitude();
+                            double secondLatitude = locationObjects.get(i).getLatitude();
+                            if(secondLatitude!=0 && secondLongitude !=0) {
+                                Location.distanceBetween(latitude, longitude, secondLatitude, secondLongitude, results);
                                 if (results[0] < 20) {
                                     isNearLocation =true;
-                                    nearLocationIndicies.add(i);
-
+                                    nearLocationId.add(locationObjects.get(i).getId());
                                 }
                             }
                         }
-                        boolean isDateInserted = false;
-                        if(isNearLocation) {
-                            Toast.makeText(MainActivity.this, "You are now close to one of your locations ", Toast.LENGTH_SHORT).show();
-                            for (int i = 0; i < nearLocationIndicies.size(); i++) {
-                                isDateInserted = (sqliteDatabaseAdapter.insertDate(nearLocationIndicies.get(i)));
-                            }
-                            if (isDateInserted)
-                                Toast.makeText(MainActivity.this, "new date was added ", Toast.LENGTH_SHORT).show();
+                        for(int i = 0 ; i< nearLocationId.size() ; i++){
+                            if(sqliteDatabaseAdapter.insertDate(nearLocationId.get(i)))
+                                isDateInserted =true;
                         }
-                }
+
+                        if(isNearLocation)
+                            Toast.makeText(MainActivity.this, "You are now close to one of your locations ", Toast.LENGTH_SHORT).show();
+                        if(isDateInserted) {
+                            Toast.makeText(MainActivity.this, "new date was added ", Toast.LENGTH_SHORT).show();
+                            isDateInserted = false;
+                        }
+                    }
                 }
                 else
                     Toast.makeText(MainActivity.this, "You must take a picture" , Toast.LENGTH_SHORT).show();
